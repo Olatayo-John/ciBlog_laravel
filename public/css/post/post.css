@@ -1,0 +1,29 @@
+.postImages{
+    /* border:2px solid red; */
+    display: flex;
+    /* justify-content: ; */
+}
+.postImg{
+    padding: 0 7px;
+}
+.postImg img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.eachCommentBox{
+    position: relative;
+}
+.commentBtnActions{
+    position: absolute;
+    top:0;
+    right: 0;
+}
+
+.commentBtnActions span{
+    cursor: pointer;
+}
+#delete_comment_form button{
+    padding: 0 0 0 7px;
+}

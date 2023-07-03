@@ -1,0 +1,22 @@
+.postImages{
+    display: flex;
+}
+.postImg{
+    position: relative;
+    padding-right: 7px;
+}
+.postImg img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 7px;
+}
+.rmvPostImage,#deleteImg {
+    cursor: pointer;
+}
+
+#deleteImg{
+    position: absolute;
+    top: 0;
+}

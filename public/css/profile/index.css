@@ -1,0 +1,22 @@
+.topDetails {
+    padding:7px;
+    display: flex;
+    border:1px solid rgba(0,0,0,.125)
+}
+
+.userProfile img {
+    border-radius: 50%;
+    width: 100px;
+    max-width: 100px;
+    height: 100px;
+    max-height: 100px;
+}
+.userProfileName{
+    margin: auto 14px;
+}
+
+.bottomDetails {
+    margin-top: 14px;
+    padding:7px;
+    border:1px solid rgba(0,0,0,.125)
+}

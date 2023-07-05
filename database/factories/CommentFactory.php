@@ -17,7 +17,7 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'=>fake()->numberBetween($min = 2, $max = 12),
+            'user_id'=>fake()->numberBetween($min = 2, $max = 11),
             'post_id'=>fake()->numberBetween($min = 1, $max = 50),
             'comment'=>fake()->paragraph(),
         ];

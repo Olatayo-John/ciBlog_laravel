@@ -29,11 +29,13 @@
                             <a class="nav-link" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('support') }}">Support</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('post.index') }}">All Posts</a>
                         </li>
+                        @auth
+                            <li class="nav-item" style="margin:auto 0">
+                                <a class="nav-link" href="{{ route('post.create') }}">Create Post</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
@@ -50,13 +52,14 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                     role="button" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{ auth()->user()->profileImage ? asset('storage/' . auth()->user()->profileImage) : asset('images/default/'.'no_image.jpg') }}" style="width:30px;height:30px;border-radius:50%">
+                                    <img src="{{ auth()->user()->profileImage ? asset('storage/' . auth()->user()->profileImage) : asset('images/default/' . 'no_image.jpg') }}"
+                                        style="width:30px;height:30px;border-radius:50%">
                                     {{ auth()->user()->name ?? auth()->user()->username }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="{{ route('profile.index') }}">My Profile</a></li>
                                     <li><a class="dropdown-item" href="{{ route('my-posts') }}">My Posts</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('usersetting.index') }}">Settings</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('usersetting.index') }}">My Settings</a></li>
                                     <li class="btn-danger_">
                                         <form action="{{ route('logout') }}" method="post">@csrf @method('post')
                                             <a class="dropdown-item"><button class="btn p-0">Logout</button></a>
@@ -64,10 +67,34 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item" style="margin:auto 0">
-                                <a class="nav-link" href="{{ route('post.create') }}">Create Post</a>
-                            </li>
+
+                            @if (auth()->user()->role->pluck('name')->first() !== 'User')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                        role="button" data-toggle="dropdown" aria-expanded="false">Users</a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">All Users</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.user.create') }}">Add User</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                        role="button" data-toggle="dropdown" aria-expanded="false">Authorization</a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item" href="{{ route('admin.authorization') }}">Role and Permission</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
                         @endauth
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('support') }}">Support</a>
+                        </li>
+                        
                     </ul>
 
                 </div>

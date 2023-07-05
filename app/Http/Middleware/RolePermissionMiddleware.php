@@ -21,8 +21,8 @@ class RolePermissionMiddleware
     {
         $userPer = Auth::user()->permissions->pluck('name')->unique();
 
-        foreach ($userPer as $up) {
-            Gate::define($up, function(){
+        foreach ($userPer as $permission) {
+            Gate::define($permission, function(){
                 return true;
             });
         }

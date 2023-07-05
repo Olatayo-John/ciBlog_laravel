@@ -29,9 +29,9 @@
                 </div>
             @endguest
             @auth
-            <div class="text-center">
-                <a href="{{ route('dashboard') }}" class="btn btn-secondary">Dashboard</a>
-            </div>
+                <div class="text-center">
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary">Dashboard</a>
+                </div>
             @endauth
         </div>
 

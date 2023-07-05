@@ -118,7 +118,8 @@ class CommentController extends Controller
         $this->isOwner($comment->user_id);
 
         DB::transaction(function () use ($comment) {
-            Comment::where('id','=',$comment->id)->delete();
+            // Comment::where('id','=',$comment->id)->delete();
+            $comment->delete();
         });
 
         return back()->with('message', 'Comment deleted');

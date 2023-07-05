@@ -6,26 +6,40 @@
 
         <div class="topDetails">
             <div class="userProfile">
-                <img src="{{ auth()->user()->profileImage ? asset('storage/' . auth()->user()->profileImage) : asset('images/default/'.$settingImage.'.jpg') }}"
+                <img src="{{ auth()->user()->profileImage ? asset('storage/' . auth()->user()->profileImage) : asset('images/default/' . $settingImage . '.jpg') }}"
                     alt="">
             </div>
             <div class="userProfileName">
-                <h5>{{ auth()->user()->name }} <span class="badge badge-warning">{{$userrole }}</span></h5>
+                <h5>{{ auth()->user()->name }} <span class="badge badge-warning">{{ $userrole }}</span></h5>
             </div>
         </div>
 
+        <div class="actions text-right mt-2">
+            <a href="{{ route('profile.edit', auth()->user()->id) }}">
+                <button class="btn btn-secondary"><i class="fa-solid fa-edit"></i></button>
+            </a>
+            <button class="btn btn-danger deleteAccountBtn"><i class="fa-solid fa-trash"></i></button>
+        </div>
+
         <div class="bottomDetails">
-            <div class="actions text-right">
-                <a href="{{ route('profile.edit', auth()->user()->id) }}">
-                    <button class="btn btn-secondary">EditProfile</button>
-                </a>
-                <button class="btn btn-danger deleteAccountBtn">Delete Account</button>
+            <div class="details">
+                <h6 class="text-center">Personal Information</h6>
+                <p><strong>Username:</strong> {{ auth()->user()->username }}</p>
+                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                <p><strong>Gender:</strong> {{ auth()->user()->gender }}</p>
+                <p><strong>Date Of Birth:</strong> {{ auth()->user()->dob }}</p>
             </div>
 
-            <p><strong>Username:</strong> {{ auth()->user()->username }}</p>
-            <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
-            <p><strong>Gender:</strong> {{ auth()->user()->gender }}</p>
-            <p><strong>Date Of Birth:</strong> {{ auth()->user()->dob }}</p>
+            <div class="details">
+                <h6 class="text-center">Permissions</h6>
+                <div class="row">
+                    @foreach (config('site.permissions') as $permission)
+                        @if (in_array($userrole, $permission['roles']))
+                            <div class="col-md-4 {{ in_array($permission['name'], $userPermissions) ? 'text-success' : 'text-danger' }}">{{ $permission['title'] }}</div>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
         </div>
 
     </section>

@@ -17,7 +17,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->numberBetween($min = 3, $max = 12),
+            'user_id' => fake()->numberBetween($min = 2, $max = 11),
             'title' => fake()->sentence(),
             'body' => fake()->paragraph(),
             'image' => '',

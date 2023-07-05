@@ -6,10 +6,10 @@ use Illuminate\Support\Str;
 
 trait UserSettingTrait
 {
-    public function userSettingValue(string $meta_key, bool $transform)
+    public function userSettingValue(string $meta_key, $cUser)
     {
         if ($meta_key ?? false) {
-            $meta_key_setting = auth()->user()->usersetting->filter(function ($settings) use ($meta_key) {
+            $meta_key_setting = $cUser->usersetting->filter(function ($settings) use ($meta_key) {
                 return $settings['meta_key'] === $meta_key;
             })->first()->toArray();
             $meta_value_db = $meta_key_setting['meta_value'];

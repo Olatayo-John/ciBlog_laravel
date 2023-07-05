@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserSettingController;
-use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AuthorizationController;
+use App\Http\Controllers\UserSettingController;
 
 
 /*
@@ -25,27 +25,36 @@ use App\Http\Controllers\TestController;
 
 
 Route::controller(PagesController::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('home');
     Route::get('support', 'support')->name('support');
 });
 
-Route::resource('post', PostController::class);
 
-Route::middleware(['auth','role_permission'])->group(function () {
+Route::middleware(['auth', 'role_permission'])->group(function () {
     Route::middleware(['verified'])->group(function () {
-        Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+        Route::get('dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
+    });
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+        Route::resource('user', UserController::class);
+        Route::put('user-role/{user}', [UserController::class, 'userRole'])->name('user-role.update');
+
+        Route::get('authorization', AuthorizationController::class)->name('authorization');
     });
 
     Route::resource('comment', CommentController::class);
-    Route::resource('profile', ProfileController::class);
-    Route::get('my-posts', [PostController::class, 'userPosts'])->name('my-posts');
-    Route::delete('postImage/{post}',[PostController::class,'postImageDelete'])->name('delete-post-image');
 
-    // Route::resource('user', UserController::class);
-    // Route::resource('setting', SettingsController::class);
+    Route::resource('profile', ProfileController::class);
+
+    Route::get('my-posts', [PostController::class, 'userPosts'])->name('my-posts');
+    Route::delete('postImage/{post}', [PostController::class, 'postImageDelete'])->name('delete-post-image');
 
     Route::resource('usersetting', UserSettingController::class);
 });
+
+Route::resource('post', PostController::class);
 
 
 

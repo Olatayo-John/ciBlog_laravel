@@ -32,8 +32,9 @@ class ProfileController extends Controller
             abort(403);
         }
 
-        $data['settingImage'] = $this->userSettingValue($meta_key = 'default_profile_image', true);
+        $data['settingImage'] = $this->userSettingValue($meta_key = 'default_profile_image', auth()->user());
         $data['userrole'] = Auth::user()->role->first()->name;
+        $data['userPermissions'] = Auth::user()->permissions->pluck('name')->toArray();
 
         return view('profile.index')->with($data);
     }
@@ -104,7 +105,7 @@ class ProfileController extends Controller
             }
 
             if ($request->filled('password')) {
-                // $updateFields['password']= Hash::make($request->input('password'));
+                $updateFields['password']= Hash::make($request->input('password'));
 
                 if ($request->input('password_change_notify') === "1") {
                     $user = auth()->user();

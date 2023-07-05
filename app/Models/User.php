@@ -23,6 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'username',
         'email',
+        'dob',
+        'gender',
+        'profileImage',
         'password',
     ];
 
@@ -64,5 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function scopeFilter($query,$filter){
+        if($filter['search'] ?? false){
+            return true;
+        }
     }
 }

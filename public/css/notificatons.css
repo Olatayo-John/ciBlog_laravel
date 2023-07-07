@@ -1,0 +1,13 @@
+.notificationDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.actionDiv {
+    /* margin: 0 7px 0 0; */
+}
+
+.actionDiv i {
+    cursor: pointer;
+    font-size: 21px;
+}

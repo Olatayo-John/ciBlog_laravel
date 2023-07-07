@@ -5,8 +5,9 @@ return [
 		[
 			'title' => 'Notify me by',
 			'meta_key' => 'notify_me_by',
-			'meta_value' => ['Mail', 'In-app', 'Slack', 'Telegram'],
-			'meta_value_default' => 'Mail',
+			// 'meta_value' => ['Mail', 'Database', 'Vonage', 'Slack', 'Telegram', 'Pusher'],
+			'meta_value' => ['Mail', 'Database'],
+			'meta_value_default' => 'Database',
 			'is_array' => true
 		],
 		[

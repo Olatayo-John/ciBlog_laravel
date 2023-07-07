@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,7 +10,6 @@ class PagesController extends Controller
 {
     public function dashboard()
     {
-
         if (Auth::user()->role->pluck('name')->contains('Admin')) {
             return to_route('admin.dashboard');
         }

@@ -8,8 +8,9 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AuthorizationController;
 use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Admin\AuthorizationController;
 
 
 /*
@@ -52,6 +53,9 @@ Route::middleware(['auth', 'role_permission'])->group(function () {
     Route::delete('postImage/{post}', [PostController::class, 'postImageDelete'])->name('delete-post-image');
 
     Route::resource('usersetting', UserSettingController::class);
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::post('read-notification', [NotificationController::class, 'markAsRead'])->name('read-notification');
 });
 
 Route::resource('post', PostController::class);
@@ -61,7 +65,7 @@ Route::resource('post', PostController::class);
 
 Route::get('/mailable', function () {
     $user = auth()->user();
-    return new App\Mail\NotifyUserPasswordChangeMail($user);
+    return new App\Mail\UserPasswordChangeMail($user);
 });
 Route::get('/tokencrypt/{id}', [TestController::class, 'tokencrypt']);
 

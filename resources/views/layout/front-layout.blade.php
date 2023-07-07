@@ -89,6 +89,12 @@
                                     </ul>
                                 </li>
                             @endif
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('notifications') }}">
+                                    <i class="fa-solid fa-bell"></i>
+                                </a>
+                            </li>
                         @endauth
 
                         <li class="nav-item">

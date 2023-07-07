@@ -10,18 +10,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyUserPasswordChange;
 use Illuminate\Support\Facades\Storage;
-use App\Jobs\NotifyUserPasswordChangeJob;
-use App\Mail\NotifyUserPasswordChangeMail;
+use App\Jobs\UserPasswordChangeJob;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\UserPasswordChangeNotification;
 
 
 class ProfileController extends Controller
 {
-    use UserSettingTrait;
-    use UserTrait;
+    use UserSettingTrait, UserTrait;
 
     /**
      * Display a listing of the resource.
@@ -105,20 +102,20 @@ class ProfileController extends Controller
             }
 
             if ($request->filled('password')) {
-                $updateFields['password']= Hash::make($request->input('password'));
+                $updateFields['password'] = Hash::make($request->input('password'));
 
                 if ($request->input('password_change_notify') === "1") {
-                    $user = auth()->user();
+                    $userNotifyable = auth()->user();
+                    $userNotifyable['userVia'] = $this->userSettingValue($meta_key = 'notify_me_by', auth()->user());
 
-                    // Mail::to($request->email)->send(new NotifyUserPasswordChangeMail($user));
-                    // Mail::to($request->email)->queue(new NotifyUserPasswordChangeMail($user));
-                    NotifyUserPasswordChangeJob::dispatch($user); //dispatch job
-
-                    // Notification::send($user, new UserPasswordChangeNotification()); //push notification
+                    // UserPasswordChangeJob::dispatch($user); //dispatch job
+                    Notification::send($userNotifyable, new UserPasswordChangeNotification($userNotifyable));
                 }
+
+                unset($updateFields['password_change_notify']);
+                unset($user['userVia']);
             }
 
-            unset($updateFields['password_change_notify']);
             DB::transaction(function () use ($id, $updateFields) {
                 User::where('id', '=', $id)->update($updateFields);
             });

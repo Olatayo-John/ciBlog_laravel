@@ -10,13 +10,16 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Traits\UserSettingTrait;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\UserPasswordChangeJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Storage;
-use App\Jobs\NotifyUserPasswordChangeJob;
 use App\Http\Requests\admin\AddUserRequest;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\admin\UpdateUserRequest;
+use App\Notifications\UserPasswordChangeNotification;
+use Illuminate\Notifications\Events\NotificationFailed;
 
 class UserController extends Controller
 {
@@ -137,11 +140,18 @@ class UserController extends Controller
             $updateFields['password'] = Hash::make($request->input('password'));
 
             if ($request->input('password_change_notify') === "1") {
-                NotifyUserPasswordChangeJob::dispatch($user); //dispatch job
+                $userNotifyable= $user;
+                $userNotifyable['userVia'] = $this->userSettingValue($meta_key = 'notify_me_by', $user);
+
+                // UserPasswordChangeJob::dispatch($user); //dispatch job
+                Notification::send($userNotifyable, new UserPasswordChangeNotification($userNotifyable));
+
             }
+
+            unset($updateFields['password_change_notify']);
+            unset($user['userVia']);
         }
 
-        unset($updateFields['password_change_notify']);
         DB::transaction(function () use ($user, $updateFields) {
             $user->update($updateFields);
         });

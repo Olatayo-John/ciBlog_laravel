@@ -113,7 +113,7 @@ class ProfileController extends Controller
                 }
 
                 unset($updateFields['password_change_notify']);
-                unset($user['userVia']);
+                unset($user['userVia']); 
             }
 
             DB::transaction(function () use ($id, $updateFields) {

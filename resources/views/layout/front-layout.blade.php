@@ -59,7 +59,8 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="{{ route('profile.index') }}">My Profile</a></li>
                                     <li><a class="dropdown-item" href="{{ route('my-posts') }}">My Posts</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('usersetting.index') }}">My Settings</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('usersetting.index') }}">My Settings</a>
+                                    </li>
                                     <li class="btn-danger_">
                                         <form action="{{ route('logout') }}" method="post">@csrf @method('post')
                                             <a class="dropdown-item"><button class="btn p-0">Logout</button></a>
@@ -84,7 +85,8 @@
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                         role="button" data-toggle="dropdown" aria-expanded="false">Authorization</a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <li><a class="dropdown-item" href="{{ route('admin.authorization') }}">Role and Permission</a>
+                                        <li><a class="dropdown-item" href="{{ route('admin.authorization') }}">Role and
+                                                Permission</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -92,7 +94,9 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('notifications') }}">
-                                    <i class="fa-solid fa-bell"></i>
+                                    <i class="fa-solid fa-bell">
+                                        <span class="badge badge-danger">{{ $notifications }}</span>
+                                    </i>
                                 </a>
                             </li>
                         @endauth
@@ -100,7 +104,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('support') }}">Support</a>
                         </li>
-                        
+
                     </ul>
 
                 </div>

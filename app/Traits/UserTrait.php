@@ -18,14 +18,14 @@ trait UserTrait
 
     public function UserInitialSettings($user)
     {
-        foreach(config('site.userSettings') as $settings){
+        foreach (config('site.userSettings') as $settings) {
             UserSetting::create([
-                'user_id'=>$user->id,
-                'title'=>$settings['title'],
-                'meta_key'=>$settings['meta_key'],
+                'user_id' => $user->id,
+                'title' => $settings['title'],
+                'meta_key' => $settings['meta_key'],
                 // 'meta_value'=> null,
-                'meta_value'=> $settings['meta_value_default'],
-                'is_array'=>$settings['is_array'],
+                'meta_value' => $settings['meta_value_default'],
+                'is_array' => $settings['is_array'],
             ]);
         }
 

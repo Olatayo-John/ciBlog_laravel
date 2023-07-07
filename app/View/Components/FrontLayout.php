@@ -3,8 +3,9 @@
 namespace App\View\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class FrontLayout extends Component
 {
@@ -13,7 +14,7 @@ class FrontLayout extends Component
      */
     public function __construct()
     {
-        //
+        // dd($this->notifications());
     }
 
     /**
@@ -22,5 +23,14 @@ class FrontLayout extends Component
     public function render(): View|Closure|string
     {
         return view('layout.front-layout');
+    }
+
+    public function notifications()
+    {
+        if (Auth::check()) {
+            if(Auth::user()->unreadNotifications){
+                return count(Auth::user()->unreadNotifications);
+            }
+        }
     }
 }

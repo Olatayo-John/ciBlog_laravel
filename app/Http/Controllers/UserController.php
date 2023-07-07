@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\UserTrait;
@@ -19,7 +18,6 @@ use App\Http\Requests\admin\AddUserRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\admin\UpdateUserRequest;
 use App\Notifications\UserPasswordChangeNotification;
-use Illuminate\Notifications\Events\NotificationFailed;
 
 class UserController extends Controller
 {
@@ -39,7 +37,7 @@ class UserController extends Controller
             ['id', '!=', auth()->user()->id], //logged in staff/admin
             ['id', '!=', '1'], //admin
         ])
-            ->latest()->get();
+        ->orderBy('name','asc')->get();
 
         return view('user.index')->with($data);
     }
@@ -140,12 +138,11 @@ class UserController extends Controller
             $updateFields['password'] = Hash::make($request->input('password'));
 
             if ($request->input('password_change_notify') === "1") {
-                $userNotifyable= $user;
+                $userNotifyable = $user;
                 $userNotifyable['userVia'] = $this->userSettingValue($meta_key = 'notify_me_by', $user);
 
                 // UserPasswordChangeJob::dispatch($user); //dispatch job
                 Notification::send($userNotifyable, new UserPasswordChangeNotification($userNotifyable));
-
             }
 
             unset($updateFields['password_change_notify']);
@@ -187,7 +184,7 @@ class UserController extends Controller
         }
 
         $user->permissions()->sync($DBpermissionIDArr);
-        
+
         return back()->with('message', 'Permission updated');
     }
 }
